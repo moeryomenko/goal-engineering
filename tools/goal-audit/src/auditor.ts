@@ -4,7 +4,8 @@ import path from 'node:path';
 export interface GoalSignals {
   goalFile: { present: boolean; path?: string };
   goalConfig: { present: boolean };
-  skills: { count: number; goalSkills: string[] };
+  doneConditions: { present: boolean };
+  skills: { count: number; goalSkills: string[]; grokNative: boolean };
   verifier: { present: boolean };
   scoper: { present: boolean };
   agentsMd: { present: boolean; mentionsGoal: boolean };
@@ -12,7 +13,7 @@ export interface GoalSignals {
   safety: { safetyDocPresent: boolean; budgetDoc: boolean };
   tests: { present: boolean };
   ci: { present: boolean };
-  runLog: { present: boolean };
+  runLog: { present: boolean; recentActivity: boolean };
 }
 
 export interface Finding {
@@ -49,22 +50,49 @@ async function fileExists(p: string): Promise<boolean> {
   }
 }
 
-async function findSkills(root: string): Promise<string[]> {
+async function findSkills(root: string): Promise<{ names: string[]; grokNative: boolean }> {
   const dirs = [
-    path.join(root, '.grok', 'skills'),
-    path.join(root, '.claude', 'skills'),
-    path.join(root, '.codex', 'skills'),
-    path.join(root, 'skills'),
+    { path: path.join(root, '.grok', 'skills'), grokNative: true },
+    { path: path.join(root, '.claude', 'skills'), grokNative: false },
+    { path: path.join(root, '.codex', 'skills'), grokNative: false },
+    { path: path.join(root, 'skills'), grokNative: false },
   ];
-  const found: string[] = [];
-  for (const dir of dirs) {
+  const found = new Set<string>();
+  let grokNative = false;
+  for (const { path: dir, grokNative: isGrok } of dirs) {
     if (!(await fileExists(dir))) continue;
+    if (isGrok) grokNative = true;
     const entries = await readdir(dir, { withFileTypes: true });
     for (const e of entries) {
-      if (e.isDirectory()) found.push(e.name);
+      if (e.isDirectory()) found.add(e.name);
     }
   }
-  return found;
+  return { names: [...found], grokNative };
+}
+
+async function goalHasDoneConditions(root: string, goalPaths: string[]): Promise<boolean> {
+  for (const rel of goalPaths) {
+    try {
+      const content = await readFile(path.join(root, rel), 'utf8');
+      if (/- \[[ xX]\]/.test(content) || /done condition/i.test(content)) return true;
+    } catch {
+      /* skip */
+    }
+  }
+  return false;
+}
+
+async function runLogRecentlyUpdated(root: string): Promise<boolean> {
+  for (const f of RUN_LOG_FILES) {
+    try {
+      const content = await readFile(path.join(root, f), 'utf8');
+      const currentYear = new Date().getFullYear();
+      if (new RegExp(String(currentYear)).test(content)) return true;
+    } catch {
+      /* skip */
+    }
+  }
+  return false;
 }
 
 async function detectTests(root: string): Promise<boolean> {
@@ -141,14 +169,33 @@ export async function auditProject(target: string): Promise<AuditResult> {
   const goalConfigPresent = await fileExists(path.join(root, 'GOAL.md'));
   if (goalConfigPresent) score += 5;
 
-  const allSkills = await findSkills(root);
+  const { names: allSkills, grokNative } = await findSkills(root);
   const goalSkills = allSkills.filter((s) => GOAL_SKILL_NAMES.includes(s));
   if (goalSkills.length > 0) {
     score += 10 + Math.min(goalSkills.length * 5, 15);
     findings.push({ level: 'ok', message: `Goal skills: ${goalSkills.join(', ')}` });
   } else {
     findings.push({ level: 'warn', message: 'No goal-verifier / goal-scoper skills found' });
-    recommendations.push('cp -r starters/minimal-goal/.grok/skills/goal-verifier .grok/skills/');
+    recommendations.push('npx @cobusgreyling/goal-init . --pattern minimal-goal --tool grok');
+  }
+
+  if (grokNative) {
+    score += 5;
+    findings.push({ level: 'ok', message: 'Skills in .grok/skills/ (Grok-native layout)' });
+  } else if (goalSkills.length > 0) {
+    findings.push({ level: 'warn', message: 'Skills not under .grok/skills/ — copy for Grok Build' });
+    recommendations.push('cp -r skills/goal-verifier .grok/skills/');
+  }
+
+  const doneConditions = goalFilePresent
+    ? await goalHasDoneConditions(root, goalPaths)
+    : false;
+  if (doneConditions) {
+    score += 5;
+    findings.push({ level: 'ok', message: 'GOAL.md has verifiable done conditions' });
+  } else if (goalFilePresent) {
+    findings.push({ level: 'warn', message: 'GOAL.md missing checkbox done conditions' });
+    recommendations.push('Add `- [ ]` checklist under Done Condition in GOAL.md');
   }
 
   const verifierPresent = goalSkills.includes('goal-verifier') || allSkills.some((s) => s.includes('verifier'));
@@ -233,12 +280,26 @@ export async function auditProject(target: string): Promise<AuditResult> {
       break;
     }
   }
+  const runLogRecent = runLog ? await runLogRecentlyUpdated(root) : false;
   if (runLog) {
     score += 5;
-    findings.push({ level: 'ok', message: 'Goal run log present' });
+    findings.push({
+      level: runLogRecent ? 'ok' : 'warn',
+      message: runLogRecent ? 'Goal run log present with recent entries' : 'Goal run log present (no recent entries)',
+    });
+  } else {
+    recommendations.push('cp templates/goal-run-log.md.template goal-run-log.md');
   }
 
   score = Math.min(100, score);
+  if (!testsPresent && score > 79) {
+    score = 79;
+    findings.push({
+      level: 'warn',
+      message: 'Score capped at G2 — add test harness for G3 (objective gates need npm test / pytest)',
+    });
+    recommendations.push('Document test command in AGENTS.md and package.json scripts.test');
+  }
   const level = scoreLevel(score);
 
   if (level === 'G0') {
@@ -256,7 +317,8 @@ export async function auditProject(target: string): Promise<AuditResult> {
     signals: {
       goalFile: { present: goalFilePresent, path: goalPaths[0] },
       goalConfig: { present: goalConfigPresent },
-      skills: { count: allSkills.length, goalSkills },
+      doneConditions: { present: doneConditions },
+      skills: { count: allSkills.length, goalSkills, grokNative },
       verifier: { present: verifierPresent },
       scoper: { present: scoperPresent },
       agentsMd: { present: agentsPresent, mentionsGoal },
@@ -264,7 +326,7 @@ export async function auditProject(target: string): Promise<AuditResult> {
       safety: { safetyDocPresent, budgetDoc },
       tests: { present: testsPresent },
       ci: { present: ciPresent },
-      runLog: { present: runLog },
+      runLog: { present: runLog, recentActivity: runLogRecent },
     },
     findings,
     recommendations: [...new Set(recommendations)],

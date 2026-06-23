@@ -138,12 +138,17 @@ Unsure? [Pattern Picker](docs/pattern-picker.md) · Full catalog: [patterns/READ
 ## Getting Started (5 minutes)
 
 ```bash
-# Scaffold a minimal goal-ready project
-cp -r starters/minimal-goal/.grok/skills/goal-verifier .grok/skills/
-cp starters/minimal-goal/GOAL.md.example GOAL.md
+# Scaffold a pattern-ready project (recommended)
+npx @cobusgreyling/goal-init . --pattern tests-green --tool grok
 
-# Audit
+# Estimate turn/token spend
+npx @cobusgreyling/goal-cost --pattern tests-green --level G2
+
+# Audit readiness
 npx @cobusgreyling/goal-audit . --suggest
+
+# See scores climb
+bash scripts/before-after-demo.sh
 ```
 
 In Grok Build:
@@ -170,8 +175,11 @@ When to combine: a daily loop triages; when it finds a fixable item, **hand off 
 ## Operating & Safety
 
 - [Operating Goals](docs/operating-goals.md) — day-to-day playbook
+- [Anti-Patterns](docs/anti-patterns.md) — design mistakes before production
+- [Multi-Goal Coordination](docs/multi-goal.md) — parallel goals and loop handoff
 - [Safety](docs/safety.md) — deny lists, human gates, kill switches
 - [Failure Modes](docs/failure-modes.md) — what goes wrong and how to recover
+- [SECURITY.md](SECURITY.md) — vulnerability reporting
 - [GOAL.md](GOAL.md) — how this reference repo uses goals on itself
 
 ## Tools
@@ -179,8 +187,10 @@ When to combine: a daily loop triages; when it finds a fixable item, **hand off 
 | Tool | Command |
 |------|---------|
 | [goal-audit](tools/goal-audit/) | `npx @cobusgreyling/goal-audit . --suggest` |
+| [goal-init](tools/goal-init/) | `npx @cobusgreyling/goal-init . --pattern tests-green --tool grok` |
+| [goal-cost](tools/goal-cost/) | `npx @cobusgreyling/goal-cost --pattern fix-bug` |
 
-Scores **Goal Readiness (G0–G3)** from signals: `GOAL.md`, verifier skill, test harness, `AGENTS.md`, done-condition clarity.
+Scores **Goal Readiness (G0–G3)** from signals: `GOAL.md`, `.grok/skills/`, verifier, test harness, done-condition checkboxes, `goal-run-log.md`.
 
 ## The Stack
 
@@ -194,7 +204,7 @@ Scores **Goal Readiness (G0–G3)** from signals: `GOAL.md`, verifier skill, tes
 
 ## Contributing
 
-PRs that improve patterns, verifier skills, or goal-audit heuristics are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md).
+PRs that improve patterns, verifier skills, or CLI heuristics are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md), [adopters](docs/adopters.md), and [stories/](stories/).
 
 ## License
 

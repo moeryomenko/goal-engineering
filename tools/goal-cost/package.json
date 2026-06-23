@@ -1,18 +1,20 @@
 {
-  "name": "@cobusgreyling/goal-audit",
-  "version": "1.1.0",
-  "description": "Goal engineering readiness auditor for Grok Build /goal. Compute Goal Readiness Score (G0-G3). npx @cobusgreyling/goal-audit . --suggest",
+  "name": "@cobusgreyling/goal-cost",
+  "version": "1.0.0",
+  "description": "Estimate token spend for Grok Build /goal sessions by pattern and maturity. npx @cobusgreyling/goal-cost --pattern tests-green",
   "type": "module",
   "bin": {
-    "goal-audit": "./dist/cli.js"
+    "goal-cost": "./dist/cli.js"
   },
   "files": [
     "dist",
+    "registry.json",
     "README.md"
   ],
   "scripts": {
-    "build": "tsc",
-    "test": "npm run build && node --test test/auditor.test.mjs",
+    "bundle": "node scripts/bundle-registry.mjs",
+    "build": "npm run bundle && tsc",
+    "test": "npm run build && node --test test/estimator.test.mjs",
     "prepublishOnly": "npm test",
     "start": "node dist/cli.js"
   },
@@ -22,18 +24,15 @@
   "keywords": [
     "goal-engineering",
     "grok-build",
-    "grok",
-    "ai-agents",
-    "coding-agents",
-    "readiness",
-    "audit"
+    "token-cost",
+    "ai-agents"
   ],
   "author": "Cobus Greyling",
   "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/cobusgreyling/goal-engineering.git",
-    "directory": "tools/goal-audit"
+    "directory": "tools/goal-cost"
   },
   "homepage": "https://github.com/cobusgreyling/goal-engineering",
   "bugs": {
@@ -44,6 +43,7 @@
   },
   "devDependencies": {
     "@types/node": "^25.9.3",
-    "typescript": "^5.0.0"
+    "typescript": "^5.0.0",
+    "yaml": "^2.8.2"
   }
 }

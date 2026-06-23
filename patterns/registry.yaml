@@ -5,28 +5,64 @@ patterns:
     file: tests-green.md
     maturity: G2
     verifier: test-suite
+    starter: starters/tests-green
+    cost:
+      typical_turns: 20
+      tokens_per_turn: 80000
+      max_turns: 30
+      verifier_turns: 3
   - id: migrate-module
     title: Migrate Module
     file: migrate-module.md
     maturity: G2
     verifier: tests + import scan
+    starter: starters/minimal-goal
+    cost:
+      typical_turns: 25
+      tokens_per_turn: 90000
+      max_turns: 40
+      verifier_turns: 4
   - id: implement-feature
     title: Implement Feature
     file: implement-feature.md
     maturity: G1
     verifier: acceptance checklist
+    starter: starters/minimal-goal
+    cost:
+      typical_turns: 18
+      tokens_per_turn: 85000
+      max_turns: 35
+      verifier_turns: 3
   - id: fix-bug
     title: Fix Bug
     file: fix-bug.md
     maturity: G2
     verifier: repro test
+    starter: starters/fix-bug
+    cost:
+      typical_turns: 12
+      tokens_per_turn: 70000
+      max_turns: 25
+      verifier_turns: 3
   - id: refactor-safely
     title: Refactor Safely
     file: refactor-safely.md
     maturity: G2
     verifier: test lock
+    starter: starters/minimal-goal
+    cost:
+      typical_turns: 15
+      tokens_per_turn: 75000
+      max_turns: 30
+      verifier_turns: 3
   - id: coverage-target
     title: Coverage Target
     file: coverage-target.md
     maturity: G2
     verifier: coverage report
+    starter: starters/minimal-goal
+    cost:
+      typical_turns: 22
+      tokens_per_turn: 80000
+      max_turns: 35
+      verifier_turns: 3

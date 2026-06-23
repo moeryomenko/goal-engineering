@@ -1,0 +1,23 @@
+# GOAL.md
+
+## Status
+ACTIVE
+
+## Active Objective
+
+Get CI / local test suite green.
+
+## Done Condition
+- [ ] Full test suite exits 0
+- [ ] No new skipped tests without documented reason
+- [ ] goal-verifier PASS
+
+## Failing Tests (start)
+- 
+
+## Deny List
+- .env, credentials, production infra
+
+## Progress Log
+
+## Blockers

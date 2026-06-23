@@ -1,16 +1,12 @@
 # Examples
 
-## Grok Build — minimal goal session
+## Grok Build
 
-```bash
-cp starters/minimal-goal/GOAL.md.example GOAL.md
-cp -r starters/minimal-goal/.grok/skills/goal-verifier .grok/skills/
-```
+- [tests-green.md](grok/tests-green.md) — CI red → green with `goal-init`
 
-```
-/goal Read GOAL.md. Fix the active objective. update_goal for progress.
-goal-verifier before completed: true.
-```
+## Claude Code
+
+- [fix-bug.md](claude-code/fix-bug.md) — Repro → fix with verifier
 
 ## Handoff from loop engineering
 

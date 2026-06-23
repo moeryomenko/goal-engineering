@@ -1,18 +1,22 @@
 {
-  "name": "@cobusgreyling/goal-audit",
-  "version": "1.1.0",
-  "description": "Goal engineering readiness auditor for Grok Build /goal. Compute Goal Readiness Score (G0-G3). npx @cobusgreyling/goal-audit . --suggest",
+  "name": "@cobusgreyling/goal-init",
+  "version": "1.0.0",
+  "description": "Scaffold goal engineering patterns and starters into any project. npx @cobusgreyling/goal-init . --pattern tests-green --tool grok",
   "type": "module",
   "bin": {
-    "goal-audit": "./dist/cli.js"
+    "goal-init": "./dist/cli.js"
   },
   "files": [
     "dist",
+    "starters",
+    "templates",
+    "patterns",
     "README.md"
   ],
   "scripts": {
-    "build": "tsc",
-    "test": "npm run build && node --test test/auditor.test.mjs",
+    "bundle": "node scripts/bundle-assets.mjs",
+    "build": "npm run bundle && tsc",
+    "test": "npm run build && node --test test/cli.test.mjs",
     "prepublishOnly": "npm test",
     "start": "node dist/cli.js"
   },
@@ -25,15 +29,16 @@
     "grok",
     "ai-agents",
     "coding-agents",
-    "readiness",
-    "audit"
+    "scaffold",
+    "starter",
+    "patterns"
   ],
   "author": "Cobus Greyling",
   "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/cobusgreyling/goal-engineering.git",
-    "directory": "tools/goal-audit"
+    "directory": "tools/goal-init"
   },
   "homepage": "https://github.com/cobusgreyling/goal-engineering",
   "bugs": {

@@ -1,0 +1,24 @@
+# GOAL.md
+
+## Status
+ACTIVE
+
+## Active Objective
+
+Fix the bug described in repro steps below.
+
+## Done Condition
+- [ ] Repro steps no longer trigger bug
+- [ ] Regression test committed
+- [ ] Full suite green
+- [ ] goal-verifier PASS
+
+## Repro Steps
+1. 
+
+## Deny List
+- Unrelated refactors
+
+## Progress Log
+
+## Blockers

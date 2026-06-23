@@ -7,18 +7,17 @@ on:
     branches: [main]
 
 jobs:
-  audit:
+  test-tools:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
-      - name: Install and test goal-audit
-        working-directory: tools/goal-audit
-        run: |
-          npm install
-          npm test
+      - name: Install and test all CLIs
+        run: npm test
+      - name: Validate registry
+        run: npm install yaml --no-save && npm run validate
       - name: Audit reference repo (dogfood)
         working-directory: tools/goal-audit
         run: node dist/cli.js ../.. --md
