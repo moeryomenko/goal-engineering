@@ -8,3 +8,7 @@
 The homepage (`docs/index.html`) is the interactive showcase with patterns, primitives, picker, and readiness simulator.
 
 First deploy may take 1–2 minutes.
+
+## Social preview (optional)
+
+Repo **Settings** → **General** → **Social preview** → upload `assets/visuals/goal-engineering-header.png` (or crop to 1280×640 for best fit on GitHub link cards).

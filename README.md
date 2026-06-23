@@ -1,6 +1,10 @@
 # Goal Engineering
 
 <p align="center">
+  <img src="assets/visuals/goal-engineering-header.png" alt="Goal Engineering — Run until verifiably done" width="100%" />
+</p>
+
+<p align="center">
   <a href="https://cobusgreyling.github.io/goal-engineering/">
     <img src="https://img.shields.io/badge/✨_Explore_the_Showcase-Run_until_done_with_Grok_Build-0d1117?style=for-the-badge&labelColor=111a28&color=f59e0b" alt="Explore the Showcase" />
   </a>
