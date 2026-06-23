@@ -12,7 +12,8 @@ Keep this repo the canonical, high-signal public reference for Grok Build CLI `/
 - [x] `goal-audit` CLI ships with G0–G3 scoring
 - [x] Minimal goal starter + verifier skill included
 - [ ] GitHub Pages showcase (optional phase 2)
-- [ ] npm publish `@cobusgreyling/goal-audit` (after first release tag)
+- [x] npm publish path via loop-engineering `release-goal-audit.yml`
+- [ ] `@cobusgreyling/goal-audit` live on npm (tag `goal-audit-v1.0.1` pending)
 
 ## Deny List
 

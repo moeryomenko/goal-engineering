@@ -6,11 +6,13 @@
 
 ## One-time setup
 
-1. Add repo secret `NPM_TOKEN` (copy from [loop-engineering](https://github.com/cobusgreyling/loop-engineering) settings) **or** configure [npm Trusted Publisher](https://docs.npmjs.com/trusted-publishers) for `@cobusgreyling/goal-audit`:
-   - Repository: `cobusgreyling/goal-engineering`
+**npm publishes from [loop-engineering](https://github.com/cobusgreyling/loop-engineering)** (`tools/goal-audit` mirror + `release-goal-audit.yml`), same pattern as `loop-audit`. Source of truth remains this repo.
+
+1. On [npmjs.com](https://www.npmjs.com/) → `@cobusgreyling/goal-audit` → **Trusted Publisher** (optional):
+   - Repository: `cobusgreyling/loop-engineering`
    - Workflow: `release-goal-audit.yml`
 
-2. Enable GitHub Pages — see [GITHUB_PAGES.md](./GITHUB_PAGES.md).
+2. GitHub Pages — see [GITHUB_PAGES.md](./GITHUB_PAGES.md) (enabled at `/docs`).
 
 ## Publish
 
