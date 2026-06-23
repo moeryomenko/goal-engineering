@@ -1,0 +1,13 @@
+# Goal Budget
+
+| Limit | Value |
+|-------|-------|
+| Max agent turns per goal | 40 |
+| Max estimated tokens | team discretion |
+| Kill switch | `/goal pause` or set GOAL.md status PAUSED_BY_HUMAN |
+
+## Escalate to human when
+
+- Deny-listed paths need edits
+- Verifier REJECT twice on same root cause
+- blocked_reason fired

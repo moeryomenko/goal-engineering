@@ -1,0 +1,32 @@
+version: 1
+patterns:
+  - id: tests-green
+    title: Tests Green
+    file: tests-green.md
+    maturity: G2
+    verifier: test-suite
+  - id: migrate-module
+    title: Migrate Module
+    file: migrate-module.md
+    maturity: G2
+    verifier: tests + import scan
+  - id: implement-feature
+    title: Implement Feature
+    file: implement-feature.md
+    maturity: G1
+    verifier: acceptance checklist
+  - id: fix-bug
+    title: Fix Bug
+    file: fix-bug.md
+    maturity: G2
+    verifier: repro test
+  - id: refactor-safely
+    title: Refactor Safely
+    file: refactor-safely.md
+    maturity: G2
+    verifier: test lock
+  - id: coverage-target
+    title: Coverage Target
+    file: coverage-target.md
+    maturity: G2
+    verifier: coverage report

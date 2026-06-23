@@ -1,0 +1,40 @@
+# GOAL.md — Active Goal State
+
+> Copy to `GOAL.md` and customize. The agent reads this every goal session.
+
+## Status
+
+`ACTIVE` | `PAUSED` | `BLOCKED` | `COMPLETED`
+
+## Active Objective
+
+<!-- One sentence -->
+
+Example: Fix flaky auth integration tests on `main`.
+
+## Done Condition
+
+- [ ] All tests in `tests/auth/` pass (`npm test -- tests/auth`)
+- [ ] CI green on goal branch
+- [ ] `goal-verifier` returns PASS
+- [ ] Progress log updated below
+
+## Deny List
+
+- `infra/**`
+- `.github/workflows/**`
+- secrets / env files
+
+## Progress Log
+
+| Date | Note |
+|------|------|
+| YYYY-MM-DD | Goal started |
+
+## Blockers
+
+<!-- Agent fills if update_goal(blocked_reason) -->
+
+## Backlog
+
+<!-- Queue next objectives here; one active /goal at a time -->
