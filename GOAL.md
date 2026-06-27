@@ -8,6 +8,7 @@ Keep this repo the canonical, high-signal public reference for Grok Build CLI `/
 
 ## Done Condition
 
+- [ ] OpenCode parity: `.opencode/skills/`, `opencode.jsonc`, `goal-init --tool opencode`, `goal-audit .opencode/skills` detection
 - [x] README, API reference, and pattern catalog published
 - [x] `goal-audit` CLI ships with G0–G3 scoring
 - [x] Minimal goal starter + verifier skill included
@@ -34,6 +35,7 @@ Keep this repo the canonical, high-signal public reference for Grok Build CLI `/
 | 2026-06-23 | Initial repo scaffold — docs, patterns, starters, goal-audit |
 | 2026-06-23 | G3 expansion — goal-init, goal-cost, dogfooding, CI registry validation |
 | 2026-06-23 | Items 1–18 — starters, meta CLI, golden path, FAQ, essay, npm publish |
+| 2026-06-27 | OpenCode parity — tooling, .opencode/skills/, docs |
 
 ## Backlog
 

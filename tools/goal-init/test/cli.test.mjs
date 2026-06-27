@@ -63,3 +63,19 @@ test('goal-init scaffolds tests-green pattern', async () => {
     await rm(tmp, { recursive: true, force: true });
   }
 });
+
+test('goal-init --tool opencode scaffolds to .opencode/skills', async () => {
+  const tmp = await mkdtemp(path.join(os.tmpdir(), 'goal-init-oc-'));
+  try {
+    const { code, stdout } = await runCli(['--pattern', 'minimal-goal', '--tool', 'opencode', tmp], tmp);
+    assert.equal(code, 0, stdout);
+
+    const skillPath = path.join(tmp, '.opencode', 'skills', 'goal-verifier', 'SKILL.md');
+    await access(skillPath);
+
+    const skill = await readFile(skillPath, 'utf8');
+    assert.match(skill, /name:\s*goal-verifier/);
+  } finally {
+    await rm(tmp, { recursive: true, force: true });
+  }
+});

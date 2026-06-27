@@ -1,6 +1,6 @@
 # Operating Goals
 
-Day-to-day playbook for goal mode in Grok Build.
+Day-to-day playbook for goal mode. These commands work in Grok Build, OpenCode, and other tools that support the goal lifecycle.
 
 ## Starting a Goal
 

@@ -116,6 +116,7 @@ Recommended project files when using goals:
 |------|---------|
 | `GOAL.md` | Active objective, done condition, progress log, blockers |
 | `AGENTS.md` | Project rules including "always verify before `completed: true`" |
-| `.grok/skills/goal-verifier/` | Skill that checks done conditions independently |
+| `.grok/skills/goal-verifier/` | Skill that checks done conditions independently (Grok Build) |
+| `.opencode/skills/goal-verifier/` | Skill that checks done conditions independently (OpenCode) |
 
 See [starters/minimal-goal/](../starters/minimal-goal/) and [templates/GOAL.md.template](../templates/GOAL.md.template).

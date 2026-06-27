@@ -14,8 +14,8 @@
 **Cause:** Self-grading (anti-pattern #1).
 
 **Fix:**
-1. `/goal pause` immediately.
-2. Add `goal-verifier` skill: `npx @cobusgreyling/goal-init . --pattern minimal-goal --tool grok`
+1. `/goal pause` immediately (or pause the goal in your tool).
+2. Add `goal-verifier` skill: `npx @cobusgreyling/goal-init . --pattern minimal-goal --tool grok` or `--tool opencode`
 3. Add to `AGENTS.md`: "Never `completed: true` without verifier PASS."
 4. Re-run goal from last known good state.
 

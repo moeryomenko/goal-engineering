@@ -55,6 +55,7 @@ async function findSkills(root: string): Promise<{ names: string[]; grokNative: 
     { path: path.join(root, '.grok', 'skills'), grokNative: true },
     { path: path.join(root, '.claude', 'skills'), grokNative: false },
     { path: path.join(root, '.codex', 'skills'), grokNative: false },
+    { path: path.join(root, '.opencode', 'skills'), grokNative: false },
     { path: path.join(root, 'skills'), grokNative: false },
   ];
   const found = new Set<string>();

@@ -56,6 +56,7 @@ npx @cobusgreyling/goal init . --pattern tests-green --tool grok
 # Or individual packages
 npx @cobusgreyling/goal-audit . --suggest
 npx @cobusgreyling/goal-init . --pattern tests-green --tool grok --lang python
+npx @cobusgreyling/goal-init . --pattern minimal-goal --tool opencode
 ```
 
 In Grok Build:

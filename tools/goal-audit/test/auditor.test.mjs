@@ -36,6 +36,17 @@ test('python fixture detects pytest harness', async () => {
   assert.equal(result.signals.verifier.present, true);
 });
 
+test('opencode-project fixture detects skills from .opencode/skills/', async () => {
+  const target = path.join(fixturesRoot, 'opencode-project');
+  const result = await auditProject(target);
+  assert.ok(result.signals.skills.count >= 1,
+    `expected >=1 skill, got ${result.signals.skills.count}`);
+  assert.ok(result.signals.skills.goalSkills.includes('goal-verifier'),
+    `expected 'goal-verifier' in goalSkills, got ${result.signals.skills.goalSkills.join(', ')}`);
+  assert.equal(result.signals.goalFile.present, true);
+  assert.equal(result.signals.doneConditions.present, true);
+});
+
 test('--json output shape from CLI', async () => {
   const { spawnSync } = await import('node:child_process');
   const cli = path.join(__dirname, '../dist/cli.js');

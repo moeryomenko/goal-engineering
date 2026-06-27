@@ -18,7 +18,7 @@ type Pattern =
   | 'refactor-safely'
   | 'coverage-target';
 
-type Tool = 'grok' | 'claude' | 'codex';
+type Tool = 'grok' | 'claude' | 'codex' | 'opencode';
 type Lang = 'node' | 'python' | 'go';
 
 const PATTERN_STARTERS: Record<Pattern, string> = {
@@ -187,40 +187,30 @@ function skillDest(targetDir: string, tool: Tool, skillName: string): string {
     grok: path.join(targetDir, '.grok', 'skills', skillName, 'SKILL.md'),
     claude: path.join(targetDir, '.claude', 'skills', skillName, 'SKILL.md'),
     codex: path.join(targetDir, '.codex', 'skills', skillName, 'SKILL.md'),
+    opencode: path.join(targetDir, '.opencode', 'skills', skillName, 'SKILL.md'),
   };
   return roots[tool];
 }
 
 async function copyGoalSkills(targetDir: string, tool: Tool, starterRoot: string, dryRun: boolean) {
-  const skillRoots = [
-    path.join(starterRoot, '.grok', 'skills'),
-    path.join(starterRoot, '.claude', 'skills'),
-    path.join(starterRoot, '.codex', 'skills'),
-  ];
+  const toolDir = `.${tool}/skills` as const;
+  const toolSkillsDir = path.join(starterRoot, toolDir);
 
-  let copied = false;
-  for (const skillsDir of skillRoots) {
-    if (!(await exists(skillsDir))) continue;
-    const toolPrefix = skillsDir.includes('.grok')
-      ? '.grok/skills'
-      : skillsDir.includes('.claude')
-        ? '.claude/skills'
-        : '.codex/skills';
-    for (const entry of await readDirNames(skillsDir)) {
-      await copyDir(path.join(skillsDir, entry), path.join(targetDir, toolPrefix, entry), dryRun);
-      copied = true;
+  if (await exists(toolSkillsDir)) {
+    for (const entry of await readDirNames(toolSkillsDir)) {
+      await copyDir(path.join(toolSkillsDir, entry), path.join(targetDir, toolDir, entry), dryRun);
     }
+    return;
   }
 
-  if (!copied) {
-    const monorepoSkills = MONOREPO_SKILLS;
+  // Fallback: copy canonical skills to the tool-specific path
+  const monorepoSkills = MONOREPO_SKILLS;
     const bundledSkills = path.join(PACKAGE_ROOT, '../../skills');
     const skillsRoot = (await exists(bundledSkills)) ? bundledSkills : monorepoSkills;
     for (const name of ['goal-verifier', 'goal-scoper', 'goal-completion-check']) {
       const src = path.join(skillsRoot, name, 'SKILL.md');
       const dest = skillDest(targetDir, tool, name);
       if (!(await exists(dest))) await copyFile(src, dest, dryRun);
-    }
   }
 }
 
@@ -297,7 +287,7 @@ async function main() {
     console.log(`goal-init — scaffold goal engineering starters
 
 Usage:
-  goal-init [target-dir] --pattern <name> --tool <grok|claude|codex>
+  goal-init [target-dir] --pattern <name> --tool <grok|claude|codex|opencode>
 
 Patterns:
   minimal-goal (default)
